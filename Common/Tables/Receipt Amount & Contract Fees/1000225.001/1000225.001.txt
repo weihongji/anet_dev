@@ -1,0 +1,8 @@
+Online/CUI
+Processing fees:	Record absorbed processing fees as transaction fee
+Absorb Public:		Absorb all processing fees
+Transaction Type:	Enroll activity
+Payment Type:		Credit Card
+Transaction Fee:	Charged
+					TRANSACTION_FEE = CONVENIENCE_FEE - CREDIT_CARD_FEE
+Credit Card Fee:	Charged

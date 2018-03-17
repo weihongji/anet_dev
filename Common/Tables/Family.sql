@@ -1,0 +1,5 @@
+SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID = 90
+--select * from FAMILYMEMBERS where CUSTOMER_ID = 90
+
+select * from FAMILIES where FAMILY_ID = 48
+select * from FAMILYMEMBERS f inner join CUSTOMERS c on f.CUSTOMER_ID = c.CUSTOMER_ID where FAMILY_ID = 48

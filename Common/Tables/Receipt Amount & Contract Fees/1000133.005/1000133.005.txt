@@ -1,0 +1,4 @@
+Processing fees:	No
+Transaction Type:	Enroll activity (include a discount)
+Payment Type:		Credit Card
+Transaction Fee:	Charged

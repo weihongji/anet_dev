@@ -1,0 +1,58 @@
+select COUNT(1) AS FailedScheduledPaymentsCount
+from DBO.ICVerifyLog ic (nolock)
+	left join DBO.CUSTOMERS c (nolock) on ic.CUSTOMER_ID=c.CUSTOMER_ID
+	left join DBO.COMPANIES cp (nolock) on ic.COMPANY_ID=cp.COMPANY_ID
+	left join DBO.ARSCHEDULEHEADER arsh (nolock) on ic.ARSCHEDULEHEADER_ID=arsh.ARSCHEDULEHEADER_ID
+	left join (
+			select DISTINCT rd.REVENUE_SITE_ID, art.ARSCHEDULEHEADER_ID
+			FROM DBO.RECEIPTDETAILS rd (nolock)
+				inner join DBO.ARTRANSACTIONS art (nolock) on rd.RECEIPTDETAIL_ID=art.RECEIPTDETAIL_ID
+				inner join DBO.ARSCHEDULEHEADER arsh (nolock) on arsh.ARSCHEDULEHEADER_ID=art.ARSCHEDULEHEADER_ID
+		) ac on arsh.ARSCHEDULEHEADER_ID = ac.ARSCHEDULEHEADER_ID
+	left join DBO.MEMBERSHIPS m (nolock) on ic.MEMBERSHIP_ID=m.MEMBERSHIP_ID
+	left join DBO.PACKAGES p (nolock) on m.PACKAGE_ID = p.PACKAGE_ID
+	left join DBO.CAMPAIGN_DONATIONS cd (nolock) on ic.CAMPAIGN_DONATION_ID=cd.CAMPAIGN_DONATION_ID
+	left join DBO.CAMPAIGNS cm (nolock) on cd.CAMPAIGN_ID = cm.CAMPAIGN_ID
+where ic.LAST_MODIFY >= '2017-10-01' and ic.LAST_MODIFY <= '2017-10-31'
+	and (ic.MEMBERSHIP_ID > 0 or ic.ARSCHEDULEHEADER_ID > 0 or ic.CAMPAIGN_DONATION_ID > 0)
+	and (ic.RESULTCODE >= 200 or ic.RESULTCODE < 0)
+
+
+;WITH
+FailedScheduledPayments AS (
+	select ISNULL(sites.sitename, 'ALL') AS sitename, ic.CUSTOMER_ID, c.FIRSTNAME, c.LASTNAME, ISNULL(COALESCE(c.HOMEPHONE, c.CELLPHONE, c.WORKPHONE), '') AS PHONE, c.EMAIL, ic.COMPANY_ID
+		, cp.COMPANYNAME, ic.PAYMENTAMOUNT, ic.BANK_ACCOUNT_NUMBER, ic.CARDNUMBER
+		, CASE ic.CARDEXPIRATION WHEN '' THEN 'N/A' ELSE ic.CARDEXPIRATION END AS CARDEXPIRATION
+		, ic.RESULTCODE, ic.PAYMENTPROCESSOR, ic.LAST_MODIFY, ic.MEMBERSHIP_ID, ic.ARSCHEDULEHEADER_ID, ic.CAMPAIGN_DONATION_ID
+		, ic.AUTO_RETRY_COUNT, m.SUSPEND_AUTO_RENEWAL, arsh.SUSPEND_AUTO_PAY, cd.SUSPENDED
+		, CASE WHEN ic.CARDNUMBER <> '' THEN 'Credit Card' WHEN ic.BANK_ACCOUNT_NUMBER <> '' THEN 'Electronic Check' ELSE 'n/a' END AS PaymentType
+		, CASE WHEN ic.CARDNUMBER <> '' THEN ic.CARDNUMBER WHEN ic.BANK_ACCOUNT_NUMBER <> '' THEN ic.BANK_ACCOUNT_NUMBER ELSE 'n/a' END AS AccountNumber
+		, CASE
+			WHEN ISNULL(ic.MEMBERSHIP_ID, '') <> '' THEN 'Membership Admin'
+			WHEN ISNULL(ic.ARSCHEDULEHEADER_ID, '') <> '' THEN 'Change Payment Plan Setup'
+			WHEN ISNULL(ic.CAMPAIGN_DONATION_ID, '') <> '' THEN 'Modify Donation'
+			ELSE 'n/a'
+		END AS AccessPaymentInformation
+		, arsh.AUTO_ROLL_OVER
+		, ROW_NUMBER() OVER(ORDER BY  c.LASTNAME, c.FIRSTNAME, cp.COMPANYNAME, ic.LAST_MODIFY) ID
+	from DBO.ICVerifyLog ic (nolock)
+		left join DBO.CUSTOMERS c (nolock) on ic.CUSTOMER_ID=c.CUSTOMER_ID
+		left join DBO.COMPANIES cp (nolock) on ic.COMPANY_ID=cp.COMPANY_ID
+		left join DBO.ARSCHEDULEHEADER arsh (nolock) on ic.ARSCHEDULEHEADER_ID=arsh.ARSCHEDULEHEADER_ID
+		left join (
+			select DISTINCT rd.REVENUE_SITE_ID, art.ARSCHEDULEHEADER_ID
+			FROM DBO.RECEIPTDETAILS rd (nolock)
+				inner join DBO.ARTRANSACTIONS art (nolock) on rd.RECEIPTDETAIL_ID=art.RECEIPTDETAIL_ID
+				inner join DBO.ARSCHEDULEHEADER arsh (nolock) on arsh.ARSCHEDULEHEADER_ID=art.ARSCHEDULEHEADER_ID
+		) ac on arsh.ARSCHEDULEHEADER_ID = ac.ARSCHEDULEHEADER_ID
+		left join DBO.MEMBERSHIPS m (nolock) on ic.MEMBERSHIP_ID=m.MEMBERSHIP_ID
+		left join DBO.PACKAGES p (nolock) on m.PACKAGE_ID = p.PACKAGE_ID
+		left join DBO.CAMPAIGN_DONATIONS cd (nolock) on ic.CAMPAIGN_DONATION_ID=cd.CAMPAIGN_DONATION_ID
+		left join DBO.CAMPAIGNS cm (nolock) on cd.CAMPAIGN_ID = cm.CAMPAIGN_ID
+		left join DBO.SITES sites (nolock) on (p.site_id = sites.SITE_ID or cm.site_id = sites.SITE_ID or ac.REVENUE_SITE_ID = sites.SITE_ID)
+	where ic.LAST_MODIFY >= '2017-10-01' and ic.LAST_MODIFY <= '2017-10-31'
+		and (ic.MEMBERSHIP_ID > 0 or ic.ARSCHEDULEHEADER_ID > 0 or ic.CAMPAIGN_DONATION_ID > 0)
+		and (ic.RESULTCODE >= 200 or ic.RESULTCODE < 0)
+)
+
+SELECT * FROM FailedScheduledPayments

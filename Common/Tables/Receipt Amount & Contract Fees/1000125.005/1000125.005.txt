@@ -1,0 +1,5 @@
+Processing fees:	Yes
+Absorb Staff:		Do not absorb any processing fees
+Transaction Type:	Gift Card Sale
+Payment Type:		Cash
+Transaction Fee:	Charged

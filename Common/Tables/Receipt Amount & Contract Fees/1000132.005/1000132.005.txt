@@ -1,0 +1,4 @@
+Processing fees:	No
+Transaction Type:	Pay on Account for 1000130.005
+Payment Type:		Cash
+Transaction Fee:	Charged

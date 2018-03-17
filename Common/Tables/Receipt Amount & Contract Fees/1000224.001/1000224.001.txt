@@ -1,0 +1,5 @@
+Processing fees:	Online/CUI
+Absorb Public:		Do not absorb any processing fees
+Transaction Type:	Enroll activity
+Payment Type:		Credit Card
+Convenience Fee:	Charged

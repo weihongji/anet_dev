@@ -1,0 +1,3 @@
+Administrationm Home » Web Admin -> Site Licensing
+
+Check "ACTIVE Payment Device Debit and Credit Cards" will make the report header display "Processing Fee" instead of "CC Fee".

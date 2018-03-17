@@ -1,0 +1,19 @@
+For AN ESI could we follow up below process and format:
+
+Process:
+1 Create one SVN folder to save scripts, Dev team upload all scripts in those folder;
+2 Comment in Jira with the SVN link like: (https://fndsvn.dev.activenetwork.com/foundations/database/ActiveNet/trunk/Scripts/ESI/ANE-26867_ar_summary_not_matching.sql).
+3 Any assign back to the Jira reporter, please comment what need  follow up.
+
+Format:
+1 Format the script name, .e.g.: “ANE-23229 _ opening_balance.sql” and “ANE-23229 _ opening_balance_rollback.sql”.
+2 Data fixing script please use the (ANE-23229 _ opening_balance) as template and follow up the database coding standard in Active which request by DBA team
+
+Thanks for your cooperation.
+Any questions please reach out  to me.
+
+Regards
+Tracy
+
+
+2015-06-12 09:01

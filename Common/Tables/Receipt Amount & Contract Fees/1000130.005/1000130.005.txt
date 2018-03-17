@@ -1,0 +1,4 @@
+Processing fees:	No
+Transaction Type:	Enroll activity
+Payment Type:		Payment Plan
+Transaction Fee:	Not Charged

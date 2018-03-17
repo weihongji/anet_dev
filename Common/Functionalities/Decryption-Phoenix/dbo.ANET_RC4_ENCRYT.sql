@@ -1,0 +1,20 @@
+IF OBJECT_ID('dbo.ANET_RC4_ENCRYT') IS NOT NULL
+    DROP FUNCTION dbo.ANET_RC4_ENCRYT;
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+CREATE FUNCTION dbo.ANET_RC4_ENCRYT( @input_str VARCHAR(256), @orig_key VARCHAR(256) ) 
+RETURNS VARCHAR(256)
+AS
+BEGIN
+
+DECLARE @result VARCHAR(256) = ''
+
+SET @result = dbo.ANET_RC4_to_HEX(dbo.rc4(dbo.ANET_checkSum(@input_str), dbo.rc4(@orig_key, 'Hidden Key')))
+
+RETURN @result
+END
+GO

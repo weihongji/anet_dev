@@ -1,0 +1,5 @@
+Processing fees:	No
+Transaction Type:	Enroll activity
+Payment Type1:		CC, $80
+Payment Type2:		Payment Plan, $20
+Transaction Fee:	Charged on CC amount

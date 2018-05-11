@@ -44,6 +44,8 @@ END
 UPDATE REPORTDEFINITION set ENABLE_SCHEDULE_REPORT = 0 where ENABLE_SCHEDULE_REPORT = -1
 UPDATE REPORTDEFINITION set ENABLE_EXPORT_TO_FTP = 0 where ENABLE_EXPORT_TO_FTP = -1
 
+update SYSTEMINFO set keywordvalue = 'apm.activenet.com' where KEYWORD = 'cui_url' and keywordvalue like '%apm.activecommunities.com'
+
 IF EXISTS(SELECT * FROM SYSTEMINFO WHERE KEYWORD = 'shorten_thread_timeouts') BEGIN
 	UPDATE SYSTEMINFO SET KEYWORDVALUE = 'true' WHERE KEYWORD = 'shorten_thread_timeouts' and cast(KEYWORDVALUE as varchar(5)) = 'false'
 END

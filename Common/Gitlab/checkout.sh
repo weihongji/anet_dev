@@ -8,76 +8,77 @@ fi
 read -p "Press [Enter] to switch to $1..."
 echo
 
+git_path=/d/git
 
-cd /d/git/acm
+cd $git_path/acm
 echo -e '\nSwitching acm...'
 git checkout "$1"
 
-#cd /d/git/activenet-clients
+#cd $git_path/activenet-clients
 
-cd /d/git/activenet-flex
+cd $git_path/activenet-flex
 echo -e '\nSwitching activenet-flex...'
 git checkout "$1"
 
-cd /d/git/activenet-logs
+cd $git_path/activenet-logs
 echo -e '\nSwitching activenet-logs...'
 git checkout "$1"
 
-cd /d/git/activenet-package
+cd $git_path/activenet-package
 echo -e '\nSwitching activenet-package...'
 git checkout "$1"
 
-cd /d/git/activenet-servlet
-echo -e '\nSwitching activenet-servlet...'
-git checkout "$1"
+# cd $git_path/activenet-servlet
+# echo -e '\nSwitching activenet-servlet...'
+# git checkout "$1"
 
-cd /d/git/activenet-sites
+cd $git_path/activenet-sites
 echo -e '\nSwitching activenet-sites...'
 git checkout "$1"
 
-cd /d/git/apd-interface-emv
+cd $git_path/apd-interface-emv
 echo -e '\nSwitching apd-interface-emv...'
 git checkout "$1"
 
-cd /d/git/aui
+cd $git_path/aui
 echo -e '\nSwitching aui...'
 git checkout "$1"
 
-#cd /d/git/cache-control
-#cd /d/git/cert
+#cd $git_path/cache-control
+#cd $git_path/cert
 
-cd /d/git/databases
+cd $git_path/databases
 echo -e '\nSwitching databases...'
 git checkout "$1"
 
-cd /d/git/db-schema
+cd $git_path/db-schema
 echo -e '\nSwitching db-schema...'
 git checkout "$1"
 
-cd /d/git/email-service
+cd $git_path/email-service
 echo -e '\nSwitching email-service...'
 git checkout "$1"
 
-#cd /d/git/entry-point
-#cd /d/git/entry-point-applet
-#cd /d/git/entry-point-db
-#cd /d/git/entry-point-ui
+#cd $git_path/entry-point
+#cd $git_path/entry-point-applet
+#cd $git_path/entry-point-db
+#cd $git_path/entry-point-ui
 
-cd /d/git/pass-production
+cd $git_path/pass-production
 echo -e '\nSwitching pass-production...'
 git checkout "$1"
 
-cd /d/git/point-of-sale
+cd $git_path/point-of-sale
 echo -e '\nSwitching point-of-sale...'
 git checkout "$1"
 
-cd /d/git/rserver-ii
+cd $git_path/rserver-ii
 echo -e '\nSwitching rserver-ii...'
 git checkout "$1"
 
-#cd /d/git/sso
-#cd /d/git/third-party-stuff
+#cd $git_path/sso
+#cd $git_path/third-party-stuff
 
-cd /d/git/utilities
+cd $git_path/utilities
 echo -e '\nSwitching utilities...'
 git checkout "$1"

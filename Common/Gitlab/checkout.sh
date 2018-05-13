@@ -4,6 +4,10 @@ if [ -z "$1" ]
 then
 	echo "No branch specified"
 	exit
+elif ! [[ $1 = ActiveNet* ]]
+then
+	echo "Invalid branch \"$1\""
+	exit
 fi
 read -p "Press [Enter] to switch to $1..."
 echo
@@ -13,6 +17,7 @@ git_path=/d/git
 cd $git_path/acm
 echo -e '\nSwitching acm...'
 git checkout "$1"
+exit
 
 #cd $git_path/activenet-clients
 

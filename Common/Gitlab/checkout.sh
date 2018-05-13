@@ -4,7 +4,7 @@ if [ -z "$1" ]
 then
 	echo "No branch specified"
 	exit
-elif ! [[ $1 = ActiveNet* ]]
+elif ! [[ $1 = ActiveNet* ]] #Only branch in pattern "ActiveNet*" is accepted.
 then
 	echo "Invalid branch \"$1\""
 	exit

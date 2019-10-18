@@ -1,5 +1,5 @@
 declare @P0 datetime
-select @p0 = '2016-08-15 00:00:00'
+select @p0 = '2019-01-06 00:00:00'
 select ah.*, rp.receiptheader_id
 	, (
 		OVERDUE.overdue_amt - (
@@ -27,6 +27,6 @@ where (
 			where art.arscheduleheader_id = ah.arscheduleheader_id and art.voided = 0 and lc.unlinked = 0
 		)
 	) > 0
-	and ARSCHEDULEHEADER_ID in (16)
+	and ARSCHEDULEHEADER_ID in (3275)
 	and suspend_auto_pay = 0
 	and auto_payment_type in (1,2,3) and auto_payment_status in (0, 10, 11)

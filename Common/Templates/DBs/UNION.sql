@@ -3,7 +3,7 @@
 SET NOCOUNT ON
 
 DECLARE @dbs TABLE(name nvarchar(255))
-INSERT INTO @dbs (name) SELECT name FROM sys.databases where name not in ('ANET_Restore', 'model', 'RollbackDB', 'SysAdmin', 'Jeffersonvilleparksrec')
+INSERT INTO @dbs (name) SELECT name FROM sys.databases where is_read_only = 0 and name not in ('ActiveNetStaging', 'ANET_Restore', 'model', 'RollbackDB', 'SysAdmin', 'Jeffersonvilleparksrec')
 --SELECT * FROM @dbs
 
 DECLARE @db_name nvarchar(255)

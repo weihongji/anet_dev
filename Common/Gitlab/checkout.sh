@@ -9,7 +9,7 @@ then
 	echo "Invalid branch \"$1\""
 	exit
 fi
-read -p "Press [Enter] to switch to $1..."
+read -p "Switching to $1. Press [Enter] to go..."
 echo
 
 git_path=/d/git
@@ -17,7 +17,6 @@ git_path=/d/git
 cd $git_path/acm
 echo -e '\nSwitching acm...'
 git checkout "$1"
-exit
 
 #cd $git_path/activenet-clients
 

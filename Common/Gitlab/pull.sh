@@ -1,6 +1,6 @@
 #! /bin/bash
 
-git_path=/d/git
+git_path=/c/Users/jwei/git
 
 cd $git_path/acm
 echo -e '\nPulling acm...'
@@ -8,6 +8,10 @@ git pull
 
 cd $git_path/activenet-clients
 echo -e '\nPulling activenet-clients...'
+git pull
+
+cd $git_path/activenet-cui
+echo -e '\nPulling activenet-cui...'
 git pull
 
 cd $git_path/activenet-flex
@@ -44,6 +48,10 @@ git pull
 
 cd $git_path/cert
 echo -e '\nPulling cert...'
+git pull
+
+cd $git_path/cui
+echo -e '\nPulling cui...'
 git pull
 
 cd $git_path/databases

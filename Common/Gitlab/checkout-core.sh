@@ -1,71 +1,25 @@
 #! /bin/bash
-#Example: $ bash checkout-core.sh ActiveNet19.12
+# checkout-core.sh $git_path $branch $run_pull $stash_changes $apply_stash
 
-# Parameters
-branch=""
-if [ -z "$1" ]
-then
-	echo "No branch specified"
-	exit
-elif [[ $1 =~ ^[1-9][0-9].[0-9]{2}$ ]]; then
-	branch="ActiveNet$1"
-else
-	branch=$1
-fi
+git_path=$1
+branch=$2
+run_pull=$3
+stash_changes=$4
+apply_stash=$5
 
-if ! [[ $branch = ActiveNet* ]] #Only branch in pattern "ActiveNet*" is accepted.
-then
-	echo -e "Invalid branch \"$1\""
-	exit
-fi
-read -p "Switching to $1. Press [Enter] to go..."
-echo
-
-do_pull="n"
-if [ "$2" = "pull" -o "$3" = "pull" -o "$4" = "pull" ]
-then
-	do_pull="y"
-fi
-
-if [ $do_pull = "y" ]
-then
+if [ $run_pull = "y" ]; then
 	bash pull.sh
 fi
 
-do_stash="y"
-if [ "$2" = "no-stash" -o "$3" = "no-stash" -o "$4" = "no-stash" ]
-then
-	do_stash="n"
-fi
-
-apply_stash="y"
-
-if [ $do_stash = "n" ]; then
-	apply_stash="n"
-fi
-
-if [ "$2" = "no-apply" -o "$3" = "no-apply" -o "$4" = "no-apply" ]
-then
-	apply_stash="n"
-fi
-
-if [ "$2" = "apply-stash" -o "$3" = "apply-stash" -o "$4" = "apply-stash" ]
-then
-	apply_stash="y"
-fi
-
-# Switch branch
-git_path=/c/Users/jwei/git
-
 cd $git_path/acm
-if [ $do_stash = "y" ]; then
+if [ $stash_changes = "y" ]; then
 	echo -e '\nStashing acm...'
 	git stash
 fi
 echo -e '\nSwitching acm...'
 git checkout "$branch"
 if [ $apply_stash = "y" ]; then
-	echo -e '\nApplying stash acm...'
+	echo -e '\nApplying stash to acm...'
 	git stash apply
 fi
 
@@ -86,7 +40,7 @@ echo -e '\nSwitching activenet-package...'
 git checkout "$branch"
 
 cd $git_path/activenet-servlet
-if [ $do_stash = "y" ]; then
+if [ $stash_changes = "y" ]; then
 	echo -e '\nStashing activenet-servlet...'
 	git checkout -- web/WEB-INF/deploy/pointofsale/rpcPolicyManifest/manifest.txt web/WEB-INF/wsdl/ActiveNetWSService.wsdl
 	git stash
@@ -94,7 +48,7 @@ fi
 echo -e '\nSwitching activenet-servlet...'
 git checkout "$branch"
 if [ $apply_stash = "y" ]; then
-	echo -e '\nApplying stash activenet-servlet...'
+	echo -e '\nApplying stash to activenet-servlet...'
 	git stash apply
 fi
 

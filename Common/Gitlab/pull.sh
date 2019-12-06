@@ -2,6 +2,10 @@
 
 git_path=/c/Users/jwei/git
 
+if [ -n "$1" ]; then
+	git_path="$1"
+fi
+
 cd $git_path/acm
 echo -e '\nPulling acm...'
 git pull

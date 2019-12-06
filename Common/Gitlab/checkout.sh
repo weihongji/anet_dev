@@ -24,13 +24,13 @@ else
 	cd ..
 	if [ -z "$existing_branch" ]; then
 		run_pull="y"
-		echo "Haven't found $branch in local repository. Will pull codes from remote."
+		echo "Pulling from remote due to not finding $branch in local repository."
 	fi
 fi
 
 if [ $run_pull = "y" ]
 then
-	bash pull.sh
+	bash pull.sh $git_path
 fi
 
 cd $git_path/acm
@@ -58,6 +58,6 @@ if [ -e "$log_file" ]; then
 	echo "" > $log_file
 fi
 
-bash checkout-core.sh $git_path $branch $run_pull $stash_changes $apply_stash > $log_file
+bash checkout-core.sh "$git_path" "$branch" $stash_changes $apply_stash > $log_file
 echo
-bash checkout-verify.sh
+bash checkout-verify.sh "$log_file"

@@ -1,15 +1,10 @@
 #! /bin/bash
-# checkout-core.sh $git_path $branch $run_pull $stash_changes $apply_stash
+# checkout-core.sh $git_path $branch $stash_changes $apply_stash
 
 git_path=$1
 branch=$2
-run_pull=$3
-stash_changes=$4
-apply_stash=$5
-
-if [ $run_pull = "y" ]; then
-	bash pull.sh
-fi
+stash_changes=$3
+apply_stash=$4
 
 cd $git_path/acm
 if [ $stash_changes = "y" ]; then

@@ -19,8 +19,16 @@ if [ $apply_stash = "y" ]; then
 fi
 
 cd $git_path/activenet-cui
+if [ $stash_changes = "y" ]; then
+	echo -e '\nStashing activenet-cui...'
+	git stash
+fi
 echo -e '\nSwitching activenet-cui...'
 git checkout "$branch"
+if [ $apply_stash = "y" ]; then
+	echo -e '\nApplying stash to activenet-cui...'
+	git stash apply
+fi
 
 cd $git_path/activenet-flex
 echo -e '\nSwitching activenet-flex...'

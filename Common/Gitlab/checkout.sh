@@ -7,7 +7,7 @@ if [ -z "$1" ]
 then
 	echo "No branch specified"
 	exit 1
-elif [[ $1 =~ ^[1-9][0-9].[0-9]{2}$ ]]; then
+elif [[ $1 =~ ^[1-9][0-9].[0-9]{1,2}$ ]]; then
 	branch="ActiveNet$1"
 else
 	branch=$1

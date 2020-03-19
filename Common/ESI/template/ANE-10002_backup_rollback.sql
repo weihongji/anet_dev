@@ -1,0 +1,34 @@
+USE Org_DB
+
+SET XACT_ABORT ON
+
+DECLARE @subject varchar(max)		= 'ANE-10002 Remove saved credit card'
+DECLARE @author varchar(max)		= 'Jesse Wei'
+DECLARE @created_date datetime		= '1/1/2017'
+DECLARE @type varchar(max)			= 'Rollback' --Datafix or Rollback
+DECLARE @description varchar(max)	= '' --Put additional information if necessary.
+DECLARE @org varchar(100) = DB_NAME()
+DECLARE @return int
+EXEC @return = rollbackdb.dbo.audit_datafix @org, @subject, @author, @created_date, @type, @description
+IF @@ERROR > 0 OR @return = -1 RETURN
+
+IF EXISTS(SELECT * FROM CREDITCARDS WHERE CREDIT_CARD_ID = 3075) OR OBJECT_ID('rollbackdb.dbo.ANE_10002_CREDITCARDS') IS NULL BEGIN
+	PRINT 'Nothing to roll back. Datafix has not been deployed yet.'
+	RETURN
+END
+
+BEGIN TRANSACTION
+	SET IDENTITY_INSERT CREDITCARDS ON
+	INSERT INTO CREDITCARDS (CREDIT_CARD_ID, CUSTOMER_ID, AMS_ACCOUNT_ID, CARD_NAME, CARD_NUMBER, CARD_EXPIRATION, CARDTYPE_ID, EXCLUDE_CREDIT_CARD, COMPANY_ID, AMS_RETENTION_DATE, BANK_ACCOUNT_NUMBER, BANK_ROUTING_NUMBER, BANK_ACCOUNT_TYPE, IS_SECONDARY_PAYMENT, RETIRED)
+	SELECT CREDIT_CARD_ID, CUSTOMER_ID, AMS_ACCOUNT_ID, CARD_NAME, CARD_NUMBER, CARD_EXPIRATION, CARDTYPE_ID, EXCLUDE_CREDIT_CARD, COMPANY_ID, AMS_RETENTION_DATE, BANK_ACCOUNT_NUMBER, BANK_ROUTING_NUMBER, BANK_ACCOUNT_TYPE, IS_SECONDARY_PAYMENT, RETIRED
+	FROM rollbackdb.dbo.ANE_10002_CREDITCARDS
+	SET IDENTITY_INSERT CREDITCARDS OFF
+	
+	UPDATE ARSCHEDULEHEADER SET SAVED_CREDITCARD_ID = 3075 WHERE ARSCHEDULEHEADER_ID = 3214
+
+	DECLARE @backup_table varchar(100) = 'ANE_10002_CREDITCARDS'
+	DECLARE @new_name varchar(100) = @backup_table + '_R_' + cast(@return as varchar)
+	EXEC rollbackdb.sys.sp_rename @backup_table,  @new_name
+	
+	PRINT char(10) + 'Rollback is done.'
+COMMIT TRANSACTION
